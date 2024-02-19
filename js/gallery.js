@@ -1,124 +1,131 @@
 const gallery = document.querySelector('.gallery');
 
- const images = [
+const images = [
   {
     preview:
-      'https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820__480.jpg',
+      "https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820__480.jpg",
     original:
-      'https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820_1280.jpg',
-    description: 'Hokkaido Flower',
+      "https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820_1280.jpg",
+    description: "Hokkaido Flower",
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2019/05/14/22/05/container-4203677__340.jpg',
+      "https://cdn.pixabay.com/photo/2019/05/14/22/05/container-4203677__340.jpg",
     original:
-      'https://cdn.pixabay.com/photo/2019/05/14/22/05/container-4203677_1280.jpg',
-    description: 'Container Haulage Freight',
+      "https://cdn.pixabay.com/photo/2019/05/14/22/05/container-4203677_1280.jpg",
+    description: "Container Haulage Freight",
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2019/05/16/09/47/beach-4206785__340.jpg',
+      "https://cdn.pixabay.com/photo/2019/05/16/09/47/beach-4206785__340.jpg",
     original:
-      'https://cdn.pixabay.com/photo/2019/05/16/09/47/beach-4206785_1280.jpg',
-    description: 'Aerial Beach View',
+      "https://cdn.pixabay.com/photo/2019/05/16/09/47/beach-4206785_1280.jpg",
+    description: "Aerial Beach View",
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2016/11/18/16/19/flowers-1835619__340.jpg',
+      "https://cdn.pixabay.com/photo/2016/11/18/16/19/flowers-1835619__340.jpg",
     original:
-      'https://cdn.pixabay.com/photo/2016/11/18/16/19/flowers-1835619_1280.jpg',
-    description: 'Flower Blooms',
+      "https://cdn.pixabay.com/photo/2016/11/18/16/19/flowers-1835619_1280.jpg",
+    description: "Flower Blooms",
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2018/09/13/10/36/mountains-3674334__340.jpg',
+      "https://cdn.pixabay.com/photo/2018/09/13/10/36/mountains-3674334__340.jpg",
     original:
-      'https://cdn.pixabay.com/photo/2018/09/13/10/36/mountains-3674334_1280.jpg',
-    description: 'Alpine Mountains',
+      "https://cdn.pixabay.com/photo/2018/09/13/10/36/mountains-3674334_1280.jpg",
+    description: "Alpine Mountains",
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2019/05/16/23/04/landscape-4208571__340.jpg',
+      "https://cdn.pixabay.com/photo/2019/05/16/23/04/landscape-4208571__340.jpg",
     original:
-      'https://cdn.pixabay.com/photo/2019/05/16/23/04/landscape-4208571_1280.jpg',
-    description: 'Mountain Lake Sailing',
+      "https://cdn.pixabay.com/photo/2019/05/16/23/04/landscape-4208571_1280.jpg",
+    description: "Mountain Lake Sailing",
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2019/05/17/09/27/the-alps-4209272__340.jpg',
+      "https://cdn.pixabay.com/photo/2019/05/17/09/27/the-alps-4209272__340.jpg",
     original:
-      'https://cdn.pixabay.com/photo/2019/05/17/09/27/the-alps-4209272_1280.jpg',
-    description: 'Alpine Spring Meadows',
+      "https://cdn.pixabay.com/photo/2019/05/17/09/27/the-alps-4209272_1280.jpg",
+    description: "Alpine Spring Meadows",
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2019/05/16/21/10/landscape-4208255__340.jpg',
+      "https://cdn.pixabay.com/photo/2019/05/16/21/10/landscape-4208255__340.jpg",
     original:
-      'https://cdn.pixabay.com/photo/2019/05/16/21/10/landscape-4208255_1280.jpg',
-    description: 'Nature Landscape',
+      "https://cdn.pixabay.com/photo/2019/05/16/21/10/landscape-4208255_1280.jpg",
+    description: "Nature Landscape",
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843__340.jpg',
+      "https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843__340.jpg",
     original:
-      'https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843_1280.jpg',
-    description: 'Lighthouse Coast Sea',
+      "https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843_1280.jpg",
+    description: "Lighthouse Coast Sea",
   },
 ];
 
-function createGalleryItem(image) {
-  const galleryItem = document.createElement('div');
-  galleryItem.classList.add('gallery-item');
+const galleryContainer = document.querySelector('.gallery');
+let lightboxInstance = null;
 
-  const img = document.createElement('img');
-  img.src = image.preview;
-  img.alt = image.description;
-  img.dataset.source = image.original;
-
-  galleryItem.appendChild(img);
-
-  return galleryItem;
+function generateGalleryMarkup(imagesArray) {
+    return imagesArray.map(({ preview, original, description }) => `
+        <li class="gallery-item">
+            <a class="gallery-link" href="${original}">
+                <img
+                    class="gallery-image"
+                    src="${preview}"
+                    data-source="${original}"
+                    alt="${description}"
+                />
+            </a>
+        </li>
+    `).join('');
 }
 
-function renderGallery(images) {
-  const renderGalleryItem = images.map(createGalleryItem);
-  gallery.append(...renderGalleryItem);
+function initializeLightbox() {
+    lightboxInstance = basicLightbox.create('<img src="" width="800" height="600">', {
+        onShow: () => {
+            document.addEventListener('keydown', onKeydown);
+        },
+        onClose: () => {
+            document.removeEventListener('keydown', onKeydown);
+        }
+    });
 }
 
-function handleKeyDown(e, instance) {
-  if (e.code === "Escape") {
-    instance.close();
-  }
+function updateLightboxContent(imageSrc) {
+    lightboxInstance.element().querySelector('img').src = imageSrc;
 }
 
-function createModal(largeImg, altImages) {
-  const instance = basicLightbox.create(`
-    <div class="modal">
-      <img src="${largeImg}" width="700" height="400" alt="${altImages}">
-    </div>
-  `, {
-    onShow: () => {
-      document.addEventListener("keydown", (e) => handleKeyDown(e, instance));
-    },
-    onClose: () => {
-      document.removeEventListener("keydown", (e) => handleKeyDown(e, instance));
+function openLightbox() {
+    lightboxInstance.show();
+}
+
+function onGalleryClick(event) {
+    event.preventDefault();
+
+    if (event.target.nodeName !== 'IMG') {
+        return;
     }
-  });
 
-  return instance;
+    const imageSrc = event.target.dataset.source;
+
+    if (!lightboxInstance) {
+        initializeLightbox();
+    }
+
+    updateLightboxContent(imageSrc);
+    openLightbox();
 }
 
-gallery.addEventListener("click", (e) => {
-  e.preventDefault();
+function onKeydown(event) {
+    if (event.key === 'Escape' && lightboxInstance) {
+        lightboxInstance.close();
+    }
+}
 
-  const target = e.target;
-  const largeImg = target.dataset.source;
-  const altImages = target.alt;
+galleryContainer.innerHTML = generateGalleryMarkup(images);
 
-  if (target === e.currentTarget || !largeImg || !altImages) return;
-
-  const instance = createModal(largeImg, altImages);
-  instance.show();
-});
-
-renderGallery(images);
+galleryContainer.addEventListener('click', onGalleryClick);
